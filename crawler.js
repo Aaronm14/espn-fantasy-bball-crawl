@@ -2,27 +2,29 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 var crawl = function(url, callback) {
-	var gameTimes = [];
+	var data = { games: [] };
+	var games = [];
 
 	request(url, function(error, response, html) {
 		if(!error) {
 			var $ = cheerio.load(html);
-			var games = $('.pncPlayerRow');
+			var gameRows = $('.pncPlayerRow');
 
-			games.each(function(i, gameRow) {
+			gameRows.each(function() {
 				var game = {
 					player: $(this).find('.playertablePlayerName a').text(),
 					time: $(this).find('.gameStatusDiv a').text() || null
 				};
 				$(this).text();
-				gameTimes.push(game);
+				games.push(game);
 			});
 
-			console.log('gametimes', gameTimes);
+			console.log('gametimes', games);
+			data.games = games;
 
 			if(callback)
 			{
-				callback(gameTimes);
+				callback(data);
 			}
 		} else {
 			console.log('Error requesting URL, ', error);

@@ -9,8 +9,8 @@ app.get('/', function(req, res) {
 app.get('/crawl', function(req, res) {
 	var url = process.argv[2];
 	crawler.crawl(url, function(result) {
-		console.log(result);
-		res.send(result);
+		console.log(result.games);
+		res.send(result.games);
 	});
 
 });
