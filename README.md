@@ -1,7 +1,10 @@
 This app will crawl a given ESPN Fantasy Basketball team URL and alert if a player with a game on the current day is left on the bench.
 
 To Use:
-Run with "node app.js \<URL for team\>"
+Run with:
+
+	"node app.js \<URL for team\>"
+
 URL example: http://games.espn.go.com/fba/clubhouse?leagueId=xxxxxx&teamId=x&seasonId=2016
 
 TODO:
