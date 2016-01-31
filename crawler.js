@@ -11,15 +11,22 @@ var crawl = function(url, callback) {
 			var gameRows = $('.pncPlayerRow');
 
 			gameRows.each(function() {
+				var onBench = $(this).find('.playerSlot').text().toLowerCase();
+				var name = $(this).find('.playertablePlayerName a').text()
+				var time = $(this).find('.gameStatusDiv a').text() || null;
+
 				var game = {
-					player: $(this).find('.playertablePlayerName a').text(),
-					time: $(this).find('.gameStatusDiv a').text() || null
+					player: name,
+					time: time,
+					timestamp: getTimestampFromString(time);,
+					onBench: (onBench === 'bench') ? true : false
 				};
-				$(this).text();
-				games.push(game);
+				if(game.player.length > 0) {
+					//Make sure not empty spot, don't return in response;
+					games.push(game);
+				}
 			});
 
-			console.log('gametimes', games);
 			data.games = games;
 
 			if(callback)
@@ -30,7 +37,25 @@ var crawl = function(url, callback) {
 			console.log('Error requesting URL, ', error);
 		}
 	});
+}
 
+function getTimestampFromString(str) {
+	//Takes string formatted like '10:00 PM' and returns JS Date
+	if(!str) {
+		return null;
+	} else {
+		var newDate = new Date();
+		var colon = str.indexOf(':');
+		var hrs = str.slice(0, colon);
+		var mins = str.slice(colon+1, colon+3);
+		var ampm = str.slice(-2);
+		if(ampm === 'PM') {
+			hrs = parseInt(hrs) + 12;
+		}
+		newDate.setHours(hrs, mins, 0, 0);
+		newDate = new Date(newDate);
+		return newDate.getTime();
+	}
 }
 
 exports.crawl = crawl;
