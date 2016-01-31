@@ -18,7 +18,7 @@ var crawl = function(url, callback) {
 				var game = {
 					player: name,
 					time: time,
-					timestamp: getTimestampFromString(time);,
+					timestamp: getTimestampFromString(time),
 					onBench: (onBench === 'bench') ? true : false
 				};
 				if(game.player.length > 0) {
